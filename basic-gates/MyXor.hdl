@@ -1,0 +1,13 @@
+CHIP MyXor {
+IN a,b;
+OUT out;
+
+PARTS:
+Nand(a=a, b=a, out=outnota);
+Nand(a=outnota, b=b, out=outxor1);
+
+Nand(a=b, b=b, out=outnotb);
+Nand(a=a, b=outnotb, out=outxor2);
+
+Nand(a=outxor1, b=outxor2, out=out);
+}

@@ -1,0 +1,12 @@
+CHIP MyMux {
+IN a, b, sel;
+OUT out;
+
+PARTS:
+Xor(a=a, b=sel, out=xorasel);
+And(a=xorasel, b=a, out=andxorasel);
+
+And(a=sel, b=b, out=andselb);
+
+Or(a=andxorasel, b=andselb, out=out);
+}

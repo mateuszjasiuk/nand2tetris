@@ -1,0 +1,9 @@
+CHIP MyOr {
+IN a,b;
+OUT out;
+
+PARTS:
+Nand(a=a, b=a, out=outnota);
+Nand(a=b, b=b, out=outnotb);
+Nand(a=outnota, b=outnotb, out=out);
+}
