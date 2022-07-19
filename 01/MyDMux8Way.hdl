@@ -1,0 +1,70 @@
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+ */
+
+CHIP MyDMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    /* A */
+    Or(a=sel[0], b=sel[1], out=sela);
+    Or(a=sela, b=sel[2], out=sela2);
+
+    Not(in=sela2, out=sela3);
+
+    And(a=sela3, b=in, out=a);
+    /* B */
+    Xor(a=sel[0], b=sel[1], out=selb1);
+    And(a=selb1, b=sel[0], out=selb2);
+
+    Xor(a=sel[2], b=selb2, out=selb3);
+    And(a=selb2, b=selb3, out=selb4);
+
+    And(a=selb4, b=in, out=b);
+    /* C */
+    Xor(a=sel[0], b=sel[1], out=selc1);
+    And(a=selc1, b=sel[1], out=selc2);
+
+    Xor(a=selc2, b=sel[2], out=selc3);
+    And(a=selc2, b=selc3, out=selc4);
+
+    And(a=selc4, b=in, out=c);
+    /* D */
+    And(a=sel[0], b=sel[1], out=seld);
+
+    Xor(a=seld, b=sel[2], out=seld2);
+    And(a=seld2, b=seld, out=seld3);
+
+    And(a=seld3, b=in, out=d);
+    /* E */
+    Or(a=sel[0], b=sel[1], out=sele);
+    Not(in=sele, out=sele2);
+
+    And(a=sele2, b=sel[2], out=sele3);
+
+    And(a=sele3, b=in, out=e);
+    /* F */
+    Xor(a=sel[0], b=sel[1], out=self1);
+    And(a=self1, b=sel[0], out=self2);
+
+    And(a=self2, b=sel[2], out=self3);
+
+    And(a=self3, b=in, out=f);
+    /* G */
+    Xor(a=sel[0], b=sel[1], out=selg1);
+    And(a=selg1, b=sel[1], out=selg2);
+
+    And(a=selg2, b=sel[2], out=selg3);
+
+    And(a=selg3, b=in, out=g);
+    /* H */
+    And(a=sel[0], b=sel[1], out=selh);
+    And(a=selh, b=sel[2], out=selh2);
+
+    And(a=selh2, b=in, out=h);
+}
