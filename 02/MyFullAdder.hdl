@@ -1,0 +1,10 @@
+CHIP MyFullAdder {
+    IN a, b, c;
+    OUT sum,
+        carry;
+
+    PARTS:
+    HalfAdder(a=b, b=c, sum=sum1, carry=carry1);
+    HalfAdder(a=a, b=sum1, sum=sum, carry=carry2);
+    Xor(a=carry1, b=carry2, out=carry);
+}
